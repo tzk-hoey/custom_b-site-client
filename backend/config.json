@@ -1,0 +1,17 @@
+{
+    "apis":{
+        "popular_api": "https://api.bilibili.com/x/web-interface/popular",
+        "index_url": "https://www.bilibili.com/",
+        "my_info_api": "https://api.bilibili.com/x/space/v2/myinfo",
+        "reply_to_me_api": "https://api.bilibili.com/x/msgfeed/reply",
+        "approval_to_me_api": "https://api.bilibili.com/x/msgfeed/like",
+        "dynamic_api": "https://api.bilibili.com/x/polymer/web-dynamic/v1/feed/all"
+    },
+    "base_headers":{
+        "accept-encoding": "gzip, deflate, br",
+        "accept-language": "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6",
+        "accept": "text/html,application/xhtml+xml,application/xml,image/webp,image/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+        "content-type": "text/html; charset=UTF-8",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36 Edg/97.0.1072.69"
+    }
+}
