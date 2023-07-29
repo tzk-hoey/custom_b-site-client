@@ -15,9 +15,10 @@ const configStore = useConfigStore()
 import { useDynamicAPI } from '@/apis/dynamic'
 const { getDynamicAPI } = useDynamicAPI(configStore.backendURL)
 
-let dynamicType = useRoute().params.type
+const dynamicType = ref(useRoute().params.type)
 onBeforeRouteUpdate((to) => {
-    dynamicType = to.params.type
+    dynamicType.value = to.params.type
+    console.log(dynamicType.value)
     dynamicData.value.splice(0, dynamicData.value.length)
     dynamicCursor.page = 1
     dynamicCursor.offset = undefined

@@ -1,5 +1,5 @@
 <template>
-<el-card :style="{width:(isAll? '90%': '45%')}">
+<el-card :style="{width:(isAll? '90%': '420px')}">
     <div class="dynamic-item">
         <span class="user">
             <img v-lazy-img="data.modules.module_author.face">
@@ -8,7 +8,7 @@
             <div class="info">
                 {{ data.modules.module_author.name }}&nbsp;&nbsp;在&nbsp;&nbsp;{{ dayjs.unix(data.modules.module_author.pub_ts).format('YY-MM-DD HH:mm:ss') }}&nbsp;&nbsp;{{ data.modules.module_author.pub_action? data.modules.module_author.pub_action: action+"了动态" }}
             </div>
-            <div class="content" v-if="data.modules.module_dynamic.desc">
+            <div class="content" v-if="data.modules.module_dynamic.desc && isAll">
                 <a v-for="(node, index) in data.modules.module_dynamic.desc.rich_text_nodes" :key="data.id_str+'-a'+index.toString()" :href="node.jump_url" target="_blank">{{ node.text }}</a>
             </div>
             <div class="pics"></div>
@@ -26,10 +26,33 @@
                         picture: data.modules.module_dynamic.major.archive.cover
                     }"/>
                 </div>
+                <div class="major-live" v-if="data.modules.module_dynamic.major.live_rcmd">
+                    <VideoCard :data="{
+                        floating: '👀'+data.modules.module_dynamic.major.live_rcmd.content.live_play_info.watched_show.num,    
+                        floatingBottom: '',
+                        url: 'https:'+data.modules.module_dynamic.major.live_rcmd.content.live_play_info.link,
+                        title: data.modules.module_dynamic.major.live_rcmd.content.live_play_info.title,
+                        subtitle: data.modules.module_dynamic.major.live_rcmd.content.live_play_info.parent_area_name,
+                        picture: data.modules.module_dynamic.major.live_rcmd.content.live_play_info.cover
+                    }"/>
+                </div>
             </div>
             <div class="addition"></div>
             <div class="origin" v-if="data.orig">
                 <DynamicItem :data="data.orig"/>
+            </div>
+            <div class="stat" v-if="data.modules.module_stat && isAll">
+                <el-button-group>
+                    <el-button>
+                        <el-icon><Share/></el-icon>{{ data.modules.module_stat.forward.count }}
+                    </el-button>
+                    <el-button>
+                        <el-icon><Comment/></el-icon>{{ data.modules.module_stat.comment.count }}
+                    </el-button>
+                    <el-button>
+                        <el-icon><CircleCheck/></el-icon>{{ data.modules.module_stat.like.count }}
+                    </el-button>
+                </el-button-group>
             </div>
             <div class="three-points"></div>
         </span>
@@ -67,6 +90,8 @@ data.
                             src
                     ]   
                 archive.    #视频对象
+                live_rcmd.
+                    content #直播数据json字符串
                     
             additional.
                 reverse. #附件内容
@@ -88,9 +113,14 @@ import dayjs from 'dayjs'
 import {ref} from 'vue'
 
 const props = defineProps({
-    data: { type: Object, default: () => {}},
+    data: { type: Object, required: true},
     isAll: { type: Boolean, default: true}
 })
+
+// preprocess live info
+if (props.data.modules.module_dynamic.major && props.data.modules.module_dynamic.major.live_rcmd){
+    props.data.modules.module_dynamic.major.live_rcmd.content = JSON.parse(props.data.modules.module_dynamic.major.live_rcmd.content)
+}
 
 const action = ref(props.data.orig? '转发': '发布')
 </script>
