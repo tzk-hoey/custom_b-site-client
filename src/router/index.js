@@ -5,6 +5,7 @@ import Config from '@/views/Config/index.vue'
 import Reply from '@/views/Message/Reply/index.vue'
 import Approval from '@/views/Message/Approval/index.vue'
 import Dynamic from '@/views/Dynamic/index.vue'
+import Follow from '@/views/Follow/index.vue'
 import Test from '@/views/Test.vue'
 
 const router = createRouter({
@@ -40,9 +41,14 @@ const router = createRouter({
           meta: {title: '点赞'}
         },
         {
-          path: 'dynamic/:type',
+          path: 'dynamic/:type/:mid?',
           component: Dynamic,
           meta: {title: '动态'}
+        },
+        {
+          path: 'follow',
+          component: Follow,
+          meta: {title: '关注'}
         }
       ]
     }

@@ -13,7 +13,7 @@
         loading="lazy"
           />
     </div>
-    </el-scrollbar>
+  </el-scrollbar>
 </template>
 
 <script setup>

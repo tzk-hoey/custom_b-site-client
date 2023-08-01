@@ -19,6 +19,9 @@
             <el-row>
                 <el-button @click="refreshCookies" size="small">刷新</el-button>
             </el-row>
+            <el-row>
+                <el-button @click="clearCookies" size="small">清空</el-button>
+            </el-row>
         </el-col>
     </el-form-item>
 </el-form>
@@ -64,10 +67,14 @@ async function refreshCookies(){
     configStore.cookiesJSON = JSON.stringify(res)
     await getMyinfo()
 }
+
+function clearCookies(){
+    configStore.cookiesJSON = ''
+}
 </script>
 
 <style lang="scss" scoped>
 .el-row{
-    padding-bottom: 10px;
+    padding-bottom: 2px;
 }
 </style>

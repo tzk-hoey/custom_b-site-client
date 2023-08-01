@@ -5,7 +5,8 @@
         "my_info_api": "https://api.bilibili.com/x/space/v2/myinfo",
         "reply_to_me_api": "https://api.bilibili.com/x/msgfeed/reply",
         "approval_to_me_api": "https://api.bilibili.com/x/msgfeed/like",
-        "dynamic_api": "https://api.bilibili.com/x/polymer/web-dynamic/v1/feed/all"
+        "dynamic_api": "https://api.bilibili.com/x/polymer/web-dynamic/v1/feed/all",
+        "portal_api": "https://api.bilibili.com/x/polymer/web-dynamic/v1/portal"
     },
     "base_headers":{
         "accept-encoding": "gzip, deflate, br",

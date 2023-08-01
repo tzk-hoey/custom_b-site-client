@@ -64,7 +64,7 @@ class BAPIRequest:
             params.update(cursor)
         return self.client.get(config['apis']['approval_to_me_api'], params=params)
     
-    def get_dynamic(self, cursor:dict={}, type='all') -> Response:
+    def get_dynamic(self, cursor:dict={}, type='all', host_mid=None) -> Response:
         '''
         cursor = {
             page: int
@@ -78,8 +78,13 @@ class BAPIRequest:
         }
         if 'page' in cursor:
             params.update(cursor)
+        if host_mid is not None:
+            params['host_mid'] = host_mid
         #print(params)
         return self.client.get(config['apis']['dynamic_api'], params=params)
+
+    def get_portal(self) -> Response:
+        return self.client.get(config['apis']['portal_api'])
 
 
 if __name__ == '__main__':

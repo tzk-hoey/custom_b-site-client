@@ -9,13 +9,11 @@ import { useMyinfoAPI } from '@/apis/myinfo'
 const { getMyinfoAPI } = useMyinfoAPI(configStore.backendURL)
 
 import { useConfigAPI } from './apis/config'
-const { postCookiesAPI, refreshCookiesAPI } = useConfigAPI(configStore.backendURL)
+const { refreshCookiesAPI } = useConfigAPI(configStore.backendURL)
 
-async function postCookies(){
-    if (configStore.cookiesJSON){
-        await postCookiesAPI(configStore.cookiesJSON)
-        await refreshCookiesAPI()
-    }
+async function refreshCookies(){
+    const res = await refreshCookiesAPI()
+    configStore.cookiesJSON = JSON.stringify(res)
 }
 
 async function getMyinfo(){
@@ -30,9 +28,7 @@ async function getMyinfo(){
     }
 }
 
-
-if (configStore.cookiesJSON && !myinfoStore.logged)
-    postCookies().then(() => getMyinfo())
+refreshCookies().then(() => getMyinfo())
 </script>
 
 <template>

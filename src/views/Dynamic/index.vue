@@ -1,4 +1,5 @@
 <template>
+<Portal :data="portalData" v-if="dynamicType === 'all'" :type="dynamicType" :mid="dynamicMid"/>
 <div class="dynamic-wrapper">
     <DynamicItem v-for="item in dynamicData" :key="item.id_str" :data="item" :is-all="dynamicType === 'all'"/>
 </div>
@@ -7,18 +8,22 @@
 
 <script setup>
 import DynamicItem from './Component/DynamicItem.vue'
+import Portal from './Component/Portal.vue'
+
 
 import { ref } from 'vue'
 import { useRoute, onBeforeRouteUpdate } from 'vue-router'
 import { useConfigStore } from '@/stores/config'
 const configStore = useConfigStore()
 import { useDynamicAPI } from '@/apis/dynamic'
-const { getDynamicAPI } = useDynamicAPI(configStore.backendURL)
+const { getDynamicAPI, getPortalAPI } = useDynamicAPI(configStore.backendURL)
 
-const dynamicType = ref(useRoute().params.type)
+const route = useRoute()
+const dynamicType = ref(route.params.type)
+const dynamicMid = ref(route.params.mid)
 onBeforeRouteUpdate((to) => {
     dynamicType.value = to.params.type
-    console.log(dynamicType.value)
+    dynamicMid.value = to.params.mid
     dynamicData.value.splice(0, dynamicData.value.length)
     dynamicCursor.page = 1
     dynamicCursor.offset = undefined
@@ -31,7 +36,7 @@ const dynamicCursor = {
 const dynamicData = ref([])
 const noMore = ref(false)
 async function getDynamic(dynamicType){
-    const res = await getDynamicAPI(dynamicCursor.page, dynamicCursor.offset, dynamicType)
+    const res = await getDynamicAPI(dynamicCursor.page, dynamicCursor.offset, dynamicType, dynamicMid.value)
     for (const item of res.data.items){
         dynamicData.value.push(item)
     }
@@ -39,6 +44,15 @@ async function getDynamic(dynamicType){
     dynamicCursor.offset = res.data.offset
     dynamicCursor.page += 1
 }
+
+const portalData = ref([])
+async function getPortal(){
+    const res = await getPortalAPI()
+    for (const item of res.data.up_list){
+        portalData.value.push(item)
+    }
+}
+getPortal()
 
 </script>
 

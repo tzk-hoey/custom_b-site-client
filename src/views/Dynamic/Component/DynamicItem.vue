@@ -1,5 +1,5 @@
 <template>
-<el-card :style="{width:(isAll? '90%': '420px')}">
+<el-card :style="{width:(isAll? '95%': '420px')}">
     <div class="dynamic-item">
         <span class="user">
             <img v-lazy-img="data.modules.module_author.face">
@@ -15,6 +15,12 @@
             <div class="major" v-if="data.modules.module_dynamic.major">
                 <div class="major-pics" v-if="data.modules.module_dynamic.major.draw">
                     <PictureGroup :data="data.modules.module_dynamic.major.draw.items"/>
+                </div>
+                <div class="major-opus" v-if="data.modules.module_dynamic.major.opus">
+                    <h4>{{ data.modules.module_dynamic.major.opus.title }}</h4>
+                    摘要：
+                    <a v-for="(node, index) in data.modules.module_dynamic.major.opus.summary.rich_text_nodes" :key="data.id_str+'-a'+index.toString()" :href="node.jump_url" target="_blank">{{ node.text }}</a>
+                    ...<a :href="jump_url">全文</a>
                 </div>
                 <div class="major-archive" v-if="data.modules.module_dynamic.major.archive">
                     <VideoCard :data="{
@@ -144,6 +150,7 @@ const action = ref(props.data.orig? '转发': '发布')
         img{
             height: 60px;
             width: 60px;
+            object-fit: fill;
         }
     }
 

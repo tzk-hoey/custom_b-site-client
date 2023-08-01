@@ -9,7 +9,14 @@ import json
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
 
-breq =  BAPIRequest()
+cookies = []
+try:
+    cookies = json.load(open('local/cookies.json', 'r'))
+    print('Local saved cookies read.')
+except Exception:
+    pass
+
+breq =  BAPIRequest(cookies)
 
 def make_response_json(res_text):
     res = make_response(res_text)
@@ -39,10 +46,15 @@ def cookies_manage():
         op = request.args.get('operation')
         if op == 'refresh':
             breq.refresh_cookies()
-        return make_response_json(jsonify(breq.get_cookies()))
+        cookies_json = jsonify(breq.get_cookies())
+        with open('local/cookies.json', 'wb') as f:
+            f.write(cookies_json.data)
+        return make_response_json(cookies_json)
     else:
         data = request.get_data()
         breq.set_cookies(json.loads(data))
+        with open('local/cookies.json', 'wb') as f:
+            f.write(data)
         return make_response_json(r'{code: 0, message: "保存成功！"}')
 
 @app.route('/message/replytome', methods=['GET'])
@@ -111,6 +123,7 @@ def dynamic():
     dynamic_type = request.args.get('type')
     cur_page = request.args.get('page')
     cur_offset = request.args.get('offset')
+    host_mid = request.args.get('host_mid')
     cursor = {
         'page': 1
     }
@@ -121,7 +134,22 @@ def dynamic():
     def worker():
         nonlocal res_text
         try:
-            res = breq.get_dynamic(cursor, dynamic_type)
+            res = breq.get_dynamic(cursor, dynamic_type, host_mid)
+            res_text = res.content.decode()
+        except Exception as e:
+            print(e)
+            res_text = r'{code: 1, message: "出错啦！"}'
+    coro = gevent.spawn(worker)
+    coro.join()
+    return make_response_json(res_text)
+
+@app.route('/portal', methods=['GET'])
+def portal():
+    res_text = None
+    def worker():
+        nonlocal res_text
+        try:
+            res = breq.get_portal()
             res_text = res.content.decode()
         except Exception as e:
             print(e)

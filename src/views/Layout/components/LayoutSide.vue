@@ -22,6 +22,10 @@
                     <span>视频</span>
                 </el-menu-item>
             </el-sub-menu>
+            <el-menu-item index="/follow">
+                <el-icon><List /></el-icon>
+                <span>关注</span>
+            </el-menu-item>
             <el-menu-item index="/hot">
                 <el-icon><DataLine /></el-icon>
                 <span>热门</span>
@@ -36,7 +40,7 @@
                     <span>回复</span>
                 </el-menu-item>
                 <el-menu-item index="/approval">
-                    <el-icon><ChatDotSquare /></el-icon>
+                    <el-icon><Check /></el-icon>
                     <span>点赞</span>
                 </el-menu-item>
             </el-sub-menu>

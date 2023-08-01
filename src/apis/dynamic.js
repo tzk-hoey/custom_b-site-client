@@ -4,7 +4,7 @@ export function useDynamicAPI(baseURL){
 
     const axiosFactory = request(baseURL)
 
-    function getDynamicAPI(page=undefined, offset=undefined, type='all'){
+    function getDynamicAPI(page=undefined, offset=undefined, type='all', host_mid=undefined){
         const config = {
             url: '/dynamic',
             method: 'GET',
@@ -12,12 +12,22 @@ export function useDynamicAPI(baseURL){
         config.params = {
             page,
             offset,
-            type
+            type,
+            host_mid
+        }
+        return axiosFactory(config)
+    }
+
+    function getPortalAPI(){
+        const config = {
+            url: '/portal',
+            methdo: 'GET'
         }
         return axiosFactory(config)
     }
 
     return {
-        getDynamicAPI
+        getDynamicAPI,
+        getPortalAPI
     }
 }
