@@ -28,6 +28,5 @@ coverage
 *.sw?
 
 # Python
-__pycache__
+backend/__pycache__
 backend/local
-backend/local/*
